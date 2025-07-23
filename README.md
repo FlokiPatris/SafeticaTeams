@@ -15,32 +15,10 @@ No `.env` file is required or supported.
 
 > 💡 All secrets are injected via GitHub Actions and are not stored in the repository.
 
-## 📁 Project Structure
-
-Safetica/
-├── 📂 src/                         → Source code for Playwright tests
-│   ├── 📁 Config/                  → Configuration model (TestConfig.cs)
-│   ├── 📁 Utils/                   → Environment loader (ConfigLoader.cs)
-│   ├── 📁 Pages/                   → Page Object for Teams interactions
-│   └── 📁 Tests/                   → Unified test file (TeamsTests.cs)
-
-├── 📁 TestData/                    → Sample files used for upload tests
-├── 📁 Downloads/                   → Folder for downloaded files (used in assertions)
-
-├── 🐳 Dockerfile                   → Docker build configuration
-├── 🐳 docker-compose.yml           → Docker orchestration and environment injection
-
-├── ⚙️ .github/
-│   └── 📁 workflows/
-│       └── 🧪 test.yml             → GitHub Actions workflow for CI/CD
-
-├── 📄 README.md                    → Project documentation and setup instructions
-├── 🚫 .gitignore                   → Git tracking exclusions
-
 ## 💻 Setup
 
 ### 1. 🧾 Clone the repository
-git clone https://github.com/FlokiPatris/Safetica.git
+git clone https://github.com/FlokiPatris/Safetica.git      
 cd Safetica
 
 ### 2. ⚙️ Install .NET SDK (if not already installed)
