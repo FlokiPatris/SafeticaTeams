@@ -23,7 +23,7 @@ cd Safetica
 
 ### 2. ⚙️ Install .NET SDK (if not already installed)
 Make sure you have .NET SDK 8.0+ installed.
-Check version:
+Check version:     
 dotnet --version
 
 ### 3. 📦 Restore dependencies
