@@ -24,7 +24,7 @@ cd Safetica
 ### 2. ⚙️ Install .NET SDK (if not already installed)
 dotnet --version
 
-### 3. 🚀 Run the setup script
+### 3. 🚀 Run the setup script (Using Git Bash)
 bash setup.sh
 
 ### 4. ▶️ Run the test
