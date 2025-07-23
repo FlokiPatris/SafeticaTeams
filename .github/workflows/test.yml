@@ -1,0 +1,44 @@
+name: Safetica Teams Playwright Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    environment: qa
+
+    env:
+      TEAMS_LOGIN: ${{ secrets.TEAMS_LOGIN }}
+      TEAMS_PASSWORD: ${{ secrets.TEAMS_PASSWORD }}
+      TEAMS_CHAT_NAME: ${{ secrets.TEAMS_CHAT_NAME }}
+      TEAMS_BASE_URL: ${{ secrets.TEAMS_BASE_URL }}
+      HEADLESS: "true"
+
+    steps:
+    - name: 🧾 Checkout repository
+      uses: actions/checkout@v3
+
+    - name: ⚙️ Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📦 Restore dependencies
+      run: dotnet restore
+
+    - name: 🧪 Install Playwright browsers
+      run: pwsh bin/Debug/net8.0/playwright.ps1 install
+
+    - name: ✅ Run tests
+      run: dotnet test --logger:"console;verbosity=detailed"
+
+    - name: 📸 Upload screenshots
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: screenshots
+        path: "*.png"

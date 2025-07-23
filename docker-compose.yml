@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  safetica-tests:
+    build: .
+    environment:
+      TEAMS_LOGIN: "${TEAMS_LOGIN}"
+      TEAMS_PASSWORD: "${TEAMS_PASSWORD}"
+      TEAMS_CHAT_NAME: "${TEAMS_CHAT_NAME}"
+      TEAMS_BASE_URL: "${TEAMS_BASE_URL}"
+      HEADLESS: "true"

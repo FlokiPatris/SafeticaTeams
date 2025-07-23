@@ -1,0 +1,40 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.csproj.user
+
+# Playwright downloads and cache
+.playwright/
+playwright-report/
+TestResults/
+
+# VS Code settings
+.vscode/
+
+# Environment files
+.env
+.env.*
+
+# Downloaded test files
+Downloads/
+
+# Screenshots and logs
+*.png
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.tar
+*.pid
+
+# Node modules (if used)
+node_modules/
+
+# JetBrains Rider / ReSharper
+.idea/
+*.DotSettings
