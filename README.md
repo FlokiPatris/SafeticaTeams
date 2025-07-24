@@ -15,11 +15,14 @@ No `.env` file is required or supported.
 > 💡 All secrets are injected via GitHub Actions and are not stored in the repository.
 
 ## 💻 Setup
-### 1. 🚀 Run the setup script (Using Git Bash)
+### 1. 🧾 Clone the repository
+git clone https://github.com/FlokiPatris/Safetica.git      
+
+### 2. 🚀 Run the setup script in the same folder where the repository is cloned. (Using Git Bash)
 bash setup.sh
 
-### 2. ▶️ Run the test (With Browser)
+### 3. ▶️ Run the test (With Browser)
 dotnet test
 
-### 3. 🐳 Run in Docker (Without Browser)
+### 4. 🐳 Run in Docker (Without Browser)
 docker-compose up --build

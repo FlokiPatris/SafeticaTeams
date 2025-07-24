@@ -1,8 +1,4 @@
-#!/bin/bash
-# filepath: c:\Users\fkotr\Desktop\safeticaTeams\Safetica\setup.sh
-
-echo "🧾 Step 1: Cloning the repository..."
-git clone https://github.com/FlokiPatris/Safetica.git
+echo "🧾 Step 1: Moving to created directory..."
 cd Safetica || exit
 
 echo "⚙️ Step 2: Checking .NET SDK installation..."
