@@ -18,7 +18,7 @@ fi
 
 echo ""
 echo "📁 Step 3: Navigating to test project folder..."
-TEST_PROJECT="src/SafeticaTests"
+TEST_PROJECT="SafeticaTests"
 if [ ! -d "$TEST_PROJECT" ]; then
   echo "❌ Folder $TEST_PROJECT not found."
   exit 1
@@ -48,7 +48,7 @@ npx playwright install
 
 echo ""
 echo "🧩 Step 7: Creating solution file and adding project..."
-cd ../../
+cd ..
 
 if [ ! -f "Safetica.sln" ]; then
   dotnet new sln -n Safetica
@@ -59,7 +59,7 @@ fi
 
 # Check if project is already added to solution
 if ! dotnet sln Safetica.sln list | grep -q "SafeticaTests.csproj"; then
-  dotnet sln Safetica.sln add src/SafeticaTests/SafeticaTests.csproj
+  dotnet sln Safetica.sln add SafeticaTests/SafeticaTests.csproj
   echo "✅ Project added to solution."
 else
   echo "✅ Project already linked in solution."
