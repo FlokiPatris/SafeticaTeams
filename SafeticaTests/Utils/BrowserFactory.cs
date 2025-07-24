@@ -1,6 +1,6 @@
 using Microsoft.Playwright;
 
-namespace SafeticaTeamsPlaywright.Utils
+namespace SafeticaTests.Utils
 {
     public static class BrowserFactory
     {

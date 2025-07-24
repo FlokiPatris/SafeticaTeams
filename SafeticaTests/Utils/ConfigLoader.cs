@@ -1,7 +1,6 @@
-using System;
-using SafeticaTeamsPlaywright.Config;
+using SafeticaTests.Config;
 
-namespace SafeticaTeamsPlaywright.Utils
+namespace SafeticaTests.Utils
 {
     public static class ConfigLoader
     {

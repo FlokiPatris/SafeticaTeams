@@ -1,6 +1,6 @@
 using Microsoft.Playwright;
 
-namespace SafeticaTeamsPlaywright.Pages
+namespace SafeticaTests.Pages
 {
     public class TeamsPage
     {
