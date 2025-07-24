@@ -2,7 +2,6 @@
 Safetica tests with pipeline set up.
 
 ## 🔐 Configuration
-
 This project uses **GitHub Secrets** to securely inject credentials and configuration.  
 No `.env` file is required or supported.
 
@@ -15,10 +14,14 @@ No `.env` file is required or supported.
 > 💡 All secrets are injected via GitHub Actions and are not stored in the repository.
 
 ## 🔧 Pre-Setup Requirements
-✅ Required on all platforms:
-- Git
-- .NET SDK 8.0+
-- Docker
+Before running the setup script, make sure the following tools are installed:
+
+- **Git** – for cloning the repository  
+- **.NET SDK 8.0+** – required to build and run tests  
+- **Docker** – for running tests in containers  
+- **Node.js** – required for Playwright CLI
+
+> 💡 These tools must be installed manually. The setup script does not install them automatically.
 
 ### 🪟 Windows
 - Use Git Bash (not PowerShell or CMD)
