@@ -10,18 +10,15 @@ echo "🚀 Step 3: Creating test project folder..."
 mkdir -p src/SafeticaTests
 cd src/SafeticaTests
 
-echo "📦 Step 4: Initializing empty class library..."
-dotnet new classlib
-
-echo "🧪 Step 5: Adding xUnit and Playwright dependencies..."
+echo "🧪 Step 4: Adding xUnit and Playwright dependencies..."
 dotnet add package Microsoft.Playwright
 dotnet add package xunit
 dotnet add package xunit.runner.visualstudio
 
-echo "🔧 Step 6: Restoring dependencies..."
+echo "🔧 Step 5: Restoring dependencies..."
 dotnet restore
 
-echo "🧪 Step 7: Installing Playwright browsers..."
+echo "🧪 Step 6: Installing Playwright browsers..."
 pwsh bin/Debug/net8.0/playwright.ps1 install
 
 echo "✅ Setup complete. You are now in src/SafeticaTests."
