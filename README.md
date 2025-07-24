@@ -11,28 +11,15 @@ No `.env` file is required or supported.
 - `TEAMS_PASSWORD`
 - `TEAMS_CHAT_NAME`
 - `TEAMS_BASE_URL`
-- `HEADLESS`
 
 > 💡 All secrets are injected via GitHub Actions and are not stored in the repository.
 
 ## 💻 Setup
-
-### 1. 🧾 Clone the repository
-git clone https://github.com/FlokiPatris/Safetica.git      
-cd Safetica
-
-### 2. ⚙️ Install .NET SDK (if not already installed)
-dotnet --version
-
-### 3. 🚀 Run the setup script (Using Git Bash)
+### 1. 🚀 Run the setup script (Using Git Bash)
 bash setup.sh
 
-### 4. ▶️ Run the test
-cd src/SafeticaTests       
+### 2. ▶️ Run the test (With Browser)
 dotnet test
 
-Or with headless toggle:
-HEADLESS=false dotnet test
-
-### 5. 🐳 Run in Docker (optional)
+### 3. 🐳 Run in Docker (Without Browser)
 docker-compose up --build

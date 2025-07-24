@@ -15,7 +15,8 @@ namespace SafeticaTeamsPlaywright.Tests
             var config = ConfigLoader.Load();
 
             using var playwright = await Playwright.CreateAsync();
-            var browser = await playwright.Chromium.LaunchAsync(new() { Headless = config.Headless });
+            var browser = await BrowserFactory.CreateBrowserAsync(playwright);
+
             var context = await browser.NewContextAsync(new() { AcceptDownloads = true });
             var page = await context.NewPageAsync();
 
@@ -25,7 +26,7 @@ namespace SafeticaTeamsPlaywright.Tests
             // Send messages
             await teamsPage.SendMessageAsync("aaaa");
             await teamsPage.SendMessageAsync("bbbbb");
-            await teamsPage.SendMessageAsync("cc");
+            await teamsPage.SendMessageAsync("ccc");
 
             // Upload file
             var filePath = "TestData/sample.txt";
