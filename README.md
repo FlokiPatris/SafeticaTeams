@@ -14,25 +14,26 @@ No `.env` file is required or supported.
 
 > 💡 All secrets are injected via GitHub Actions and are not stored in the repository.
 
-## 💻 Setup
-### 🔧 Pre-Setup Requirements
+## 🔧 Pre-Setup Requirements
 ✅ Required on all platforms:
 - Git
 - .NET SDK 8.0+
 - Docker
 
-### 🔧 Pre-Setup Requirements
-#### 🪟 Windows
+### 🪟 Windows
 - Use Git Bash (not PowerShell or CMD)
 
+## 💻 Setup
 ### 1. 🧾 Clone and move to the repository.
-git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica       
+git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica 
 
 ### 2. 🚀 Run the setup script in the same folder where the repository is cloned. (Using Git Bash)
 bash setup.sh
 
-### 3. ▶️ Run the test (With Browser)
+## 🧪 Running Tests
+### 1. ▶️ Run tests with browser (headless = false)
 dotnet test
 
-### 4. 🐳 Run in Docker (Without Browser)
+### 2. 🐳 Run tests in Docker (headless = true)
 docker-compose up --build
+
