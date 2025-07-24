@@ -4,23 +4,16 @@ namespace SafeticaTests.Utils
 {
     public static class BrowserFactory
     {
-    public static async Task<IBrowser> CreateBrowserAsync(IPlaywright playwright)
-    {
-        var headlessEnv = Environment.GetEnvironmentVariable("HEADLESS");
-        var headless = headlessEnv?.ToLower() == "true";
-
-        // If HEADLESS is not set, default to false (headed)
-        if (headlessEnv == null)
+        public static async Task<IBrowser> CreateBrowserAsync(IPlaywright playwright)
         {
-            headless = false;
+            var headless = Environment.GetEnvironmentVariable("HEADLESS")?.ToLower() != "false";
+
+            Console.WriteLine($"Launching browser in {(headless ? "headless" : "headed")} mode");
+
+            return await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = headless
+            });
         }
-
-        Console.WriteLine($"HEADLESS = {headlessEnv ?? "not set"} → Launching browser in {(headless ? "headless" : "headed")} mode");
-
-        return await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-        {
-            Headless = headless
-        });
-    }
     }
 }
