@@ -13,7 +13,6 @@ namespace SafeticaTeamsPlaywright.Utils
                 Password = Environment.GetEnvironmentVariable("TEAMS_PASSWORD"),
                 ChatName = Environment.GetEnvironmentVariable("TEAMS_CHAT_NAME"),
                 BaseUrl = Environment.GetEnvironmentVariable("TEAMS_BASE_URL"),
-                Headless = Environment.GetEnvironmentVariable("HEADLESS") = "false"
             };
         }
     }

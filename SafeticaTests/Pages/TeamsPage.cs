@@ -1,7 +1,4 @@
 using Microsoft.Playwright;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace SafeticaTeamsPlaywright.Pages
 {

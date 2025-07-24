@@ -1,10 +1,6 @@
-using Xunit;
 using Microsoft.Playwright;
 using SafeticaTeamsPlaywright.Utils;
 using SafeticaTeamsPlaywright.Pages;
-using System.IO;
-using System.Threading.Tasks;
-
 namespace SafeticaTeamsPlaywright.Tests
 {
     public class TeamsTests
