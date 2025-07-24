@@ -34,9 +34,6 @@ git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica
 bash setup.sh
 
 ## 🧪 Running Tests
-### 1. ▶️ Run tests with browser (headless = false)
-dotnet test
-
-### 2. 🐳 Run tests in Docker (headless = true)
+### 🐳 Run tests in Docker (headless = true)
 docker-compose up --build
 
