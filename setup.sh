@@ -1,28 +1,38 @@
+#!/bin/bash
+
 echo ""
 echo "🔧 Safetica Setup Starting..."
 echo "========================================"
 
 echo "⚙️  Step 1: Checking .NET SDK installation..."
-dotnet --version || { echo "❌ .NET SDK not found. Please install it first."; exit 1; }
+if ! dotnet --version; then
+  echo "❌ .NET SDK not found. Please install it from https://dotnet.microsoft.com/download"
+  exit 1
+fi
 
 echo ""
 echo "🐳 Step 2: Checking Docker installation..."
-docker --version || { echo "❌ Docker not found. Please install Docker to run tests in containers."; }
+if ! docker --version; then
+  echo "❌ Docker not found. Please install it from https://www.docker.com/"
+fi
 
 echo ""
-echo "🚀 Step 3: Creating test project folder..."
-mkdir -p src/SafeticaTests
-cd src/SafeticaTests
+echo "📁 Step 3: Navigating to test project folder..."
+TEST_PROJECT="src/SafeticaTests"
+if [ ! -d "$TEST_PROJECT" ]; then
+  echo "❌ Folder $TEST_PROJECT not found."
+  exit 1
+fi
+cd "$TEST_PROJECT"
 
 echo ""
-echo "📦 Step 4: Initializing empty class library..."
-dotnet new classlib
-
-echo ""
-echo "📦 Step 4: Adding xUnit and Playwright dependencies..."
-dotnet add package Microsoft.Playwright
-dotnet add package xunit
-dotnet add package xunit.runner.visualstudio
+echo "📦 Step 4: Verifying project file..."
+if [ ! -f "SafeticaTests.csproj" ]; then
+  echo "❌ Project file not found in $TEST_PROJECT."
+  exit 1
+else
+  echo "✅ Project file found: SafeticaTests.csproj"
+fi
 
 echo ""
 echo "🔧 Step 5: Restoring dependencies..."
@@ -30,12 +40,28 @@ dotnet restore
 
 echo ""
 echo "🌐 Step 6: Installing Playwright browsers..."
+if ! command -v npx; then
+  echo "❌ npx not found. Please install Node.js from https://nodejs.org/"
+  exit 1
+fi
 npx playwright install
+
+echo ""
+echo "🧩 Step 7: Creating solution file and adding project..."
+cd ../../
+if [ ! -f "Safetica.sln" ]; then
+  dotnet new sln -n Safetica
+  echo "✅ Solution file created: Safetica.sln"
+else
+  echo "✅ Solution file already exists."
+fi
+
+dotnet sln Safetica.sln add src/SafeticaTests/SafeticaTests.csproj
 
 echo ""
 echo "✅ Setup Complete!"
 echo "========================================"
-echo "📁 You are now in: src/SafeticaTests"
+echo "📁 You are now in: $(pwd)"
 echo ""
 echo "▶️ To run tests locally:      dotnet test"
 echo "🐳 To run tests in Docker:    docker-compose up --build"
