@@ -2,10 +2,13 @@ name: 🧪 Safetica Teams Playwright Tests
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   test:
-    name: 🔧 Run Playwright Tests
+    name: 🐳 Run Playwright Tests in Docker
     runs-on: windows-latest
     environment: qa
 
@@ -20,19 +23,18 @@ jobs:
       - name: 🧾 Checkout repository
         uses: actions/checkout@v3
 
-      - name: ⚙️ Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: 📦 Restore dependencies
-        run: dotnet restore
-
-      - name: 🧪 Install Playwright browsers
-        run: pwsh bin/Debug/net8.0/playwright.ps1 install
-
-      - name: ✅ Run tests with detailed output
-        run: dotnet test --logger:"console;verbosity=detailed"
+      - name: 🐳 Run tests inside Docker container
+        run: |
+          docker run --rm ^
+            -v "${{ github.workspace }}:/app" ^
+            -w /app ^
+            -e TEAMS_LOGIN="${{ secrets.TEAMS_LOGIN }}" ^
+            -e TEAMS_PASSWORD="${{ secrets.TEAMS_PASSWORD }}" ^
+            -e TEAMS_CHAT_NAME="${{ secrets.TEAMS_CHAT_NAME }}" ^
+            -e TEAMS_BASE_URL="${{ secrets.TEAMS_BASE_URL }}" ^
+            -e HEADLESS="true" ^
+            my-playwright-dotnet:latest ^
+            pwsh bin/Debug/net8.0/playwright.ps1 install ; dotnet test --logger:"console;verbosity=detailed"
 
       - name: 📸 Upload screenshots (if any)
         if: always()
