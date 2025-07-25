@@ -6,6 +6,7 @@ namespace SafeticaTests.Utils
     {
         public static ValidatedConfig EnsureValid(TestConfig config)
         {
+            CustomLogger.Log("Validating configuration...");
             if (string.IsNullOrWhiteSpace(config.Login))
                 throw new InvalidOperationException("❌ TEAMS_LOGIN is missing.");
             if (string.IsNullOrWhiteSpace(config.Password))
@@ -15,6 +16,7 @@ namespace SafeticaTests.Utils
             if (string.IsNullOrWhiteSpace(config.BaseUrl))
                 throw new InvalidOperationException("❌ TEAMS_BASE_URL is missing.");
 
+            CustomLogger.Log("Configuration validated successfully.");
             return new ValidatedConfig(
                 config.Login,
                 config.Password,

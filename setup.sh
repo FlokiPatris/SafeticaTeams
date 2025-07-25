@@ -4,20 +4,33 @@ echo ""
 echo "🔧 Safetica Setup Starting..."
 echo "========================================"
 
-echo "⚙️  Step 1: Checking .NET SDK installation..."
-if ! dotnet --version; then
-  echo "❌ .NET SDK not found. Please install it from https://dotnet.microsoft.com/download"
+echo "⚙️  Step 1: SAFETICA_PROJECT_ROOT environment variable setup..."
+export SAFETICA_PROJECT_ROOT="$(pwd)"
+echo "📁 SAFETICA_PROJECT_ROOT set to '$SAFETICA_PROJECT_ROOT'"
+echo ""
+
+echo "⚙️  Step 2: Checking .NET SDK installation..."
+if ! dotnet --version > /dev/null 2>&1; then
+  echo "❌ .NET SDK not found. Please install it from:"
+  echo "   https://dotnet.microsoft.com/download"
   exit 1
+else
+  echo "✅ .NET SDK is installed."
 fi
+echo ""
+
+echo "🐳 Step 3: Checking Docker installation..."
+if ! docker --version > /dev/null 2>&1; then
+  echo "❌ Docker not found. Please install it from:"
+  echo "   https://www.docker.com/"
+  exit 1
+else
+  echo "✅ Docker is installed."
+fi
+echo ""
 
 echo ""
-echo "🐳 Step 2: Checking Docker installation..."
-if ! docker --version; then
-  echo "❌ Docker not found. Please install it from https://www.docker.com/"
-fi
-
-echo ""
-echo "📁 Step 3: Navigating to test project folder..."
+echo "📁 Step 4: Navigating to test project folder..."
 TEST_PROJECT="SafeticaTests"
 if [ ! -d "$TEST_PROJECT" ]; then
   echo "❌ Folder $TEST_PROJECT not found."
@@ -26,7 +39,7 @@ fi
 cd "$TEST_PROJECT"
 
 echo ""
-echo "📦 Step 4: Verifying project file..."
+echo "📦 Step 5: Verifying project file..."
 if [ ! -f "SafeticaTests.csproj" ]; then
   echo "❌ Project file not found in $TEST_PROJECT."
   exit 1
@@ -35,11 +48,11 @@ else
 fi
 
 echo ""
-echo "🔧 Step 5: Restoring dependencies..."
+echo "🔧 Step 6: Restoring dependencies..."
 dotnet restore
 
 echo ""
-echo "🌐 Step 6: Installing Playwright browsers..."
+echo "🌐 Step 7: Installing Playwright browsers..."
 if ! command -v npx; then
   echo "❌ npx not found. Please install Node.js from https://nodejs.org/"
   exit 1
@@ -47,7 +60,7 @@ fi
 npx playwright install
 
 echo ""
-echo "🧩 Step 7: Creating solution file and adding project..."
+echo "🧩 Step 8: Creating solution file and adding project..."
 cd ..
 
 if [ ! -f "Safetica.sln" ]; then

@@ -20,40 +20,35 @@ namespace SafeticaTests.Fixtures
             DownloadFolder = TestEnvironment.GetProjectPath("Downloads");
             LogFolder = TestEnvironment.GetProjectPath("Logs");
 
-            Logger.Initialize(LogFolder);
-            Logger.Log($"Logger initialized. Log file will be written to: {LogFolder}");
+            CustomLogger.Initialize(LogFolder);
 
-            Logger.Log("Starting TeamsFixture initialization...");
-            Logger.Log($"TestDataFolder: {TestDataFolder}");
-            Logger.Log($"DownloadFolder: {DownloadFolder}");
-            Logger.Log($"LogFolder: {LogFolder}");
+            CustomLogger.Log("Starting TeamsFixture initialization...");
+            CustomLogger.Log($"TestDataFolder: {TestDataFolder}");
+            CustomLogger.Log($"DownloadFolder: {DownloadFolder}");
+            CustomLogger.Log($"LogFolder: {LogFolder}");
 
             TestEnvironment.PrepareTestFolders("TestData", "Downloads", "Logs");
-            Logger.Log("Test folders prepared and cleared.");
+            CustomLogger.Log("Test folders prepared and cleared.");
 
             await _playwright.InitializeAsync();
-            Logger.Log("Playwright browser launched and page context created.");
 
-            var rawConfig = ConfigLoader.Load();
-            _config = ConfigValidator.EnsureValid(rawConfig);
-            Logger.Log("Configuration loaded and validated successfully.");
+            _config = _playwright.Config;
 
             TeamsPage = new TeamsPage(_playwright.Page, _config.BaseUrl);
             await TeamsPage.LoginAsync(_config.Login, _config.Password);
-            Logger.Log($"Logged into TeamsPage at {_config.BaseUrl} as user '{_config.Login}'.");
+            CustomLogger.Log($"Logged into TeamsPage at {_config.BaseUrl} as user '{_config.Login}'.");
         }
 
         public async Task DisposeAsync()
         {
-            Logger.Log("Beginning TeamsFixture cleanup...");
+            CustomLogger.Log("Beginning TeamsFixture cleanup...");
 
             await TeamsPage.LogoutAsync();
-            Logger.Log("User logged out from TeamsPage.");
+            CustomLogger.Log("User logged out from TeamsPage.");
 
             await _playwright.DisposeAsync();
-            Logger.Log("Playwright browser and context disposed.");
 
-            Logger.Log("TeamsFixture cleanup complete.");
+            CustomLogger.Log("TeamsFixture cleanup complete.");
         }
     }
 }

@@ -7,13 +7,15 @@ namespace SafeticaTests.Utils
         public static async Task<IBrowser> CreateBrowserAsync(IPlaywright playwright)
         {
             var headless = Environment.GetEnvironmentVariable("HEADLESS")?.ToLower() != "false";
+            CustomLogger.Log($"[BrowserFactory] Launching browser in {(headless ? "headless" : "headed")} mode");
 
-            Console.WriteLine($"Launching browser in {(headless ? "headless" : "headed")} mode");
-
-            return await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = headless
             });
+
+            CustomLogger.Log("[BrowserFactory] Browser launched successfully");
+            return browser;
         }
     }
 }

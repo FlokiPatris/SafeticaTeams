@@ -1,41 +1,58 @@
+using System.Runtime.CompilerServices;
 
 namespace SafeticaTests.Utils
 {
     public static class TestEnvironment
     {
-        /// <summary>
-        /// Deletes all files and subdirectories in the specified folder.
-        /// </summary>
         public static void ClearFolder(string path)
         {
-            if (!Directory.Exists(path)) return;
+            if (!Directory.Exists(path))
+            {
+                CustomLogger.Log($"Folder not found, skipping clear: {path}", CustomLogger.LogLevel.Warning);
+                return;
+            }
 
+            CustomLogger.Log($"Clearing folder: {path}");
             foreach (var file in Directory.GetFiles(path))
                 File.Delete(file);
 
             foreach (var dir in Directory.GetDirectories(path))
                 Directory.Delete(dir, recursive: true);
+
+            CustomLogger.Log($"Folder cleared: {path}");
         }
 
-        /// <summary>
-        /// Resolves the full path to the project root and appends subpaths.
-        /// </summary>
         public static string GetProjectPath(params string[] subPaths)
         {
-            var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+            var root = GetProjectRoot();
             return Path.Combine([root, .. subPaths]);
         }
 
-        /// <summary>
-        /// Clears multiple test folders under the project root.
-        /// </summary>
+        private static string GetProjectRoot([CallerFilePath] string callerPath = "")
+        {
+            var envRoot = Environment.GetEnvironmentVariable("SAFETICA_PROJECT_ROOT");
+            if (!string.IsNullOrWhiteSpace(envRoot) && Directory.Exists(envRoot))
+            {
+                return envRoot;
+            }
+
+            var callerDir = Path.GetDirectoryName(callerPath);
+            if (string.IsNullOrWhiteSpace(callerDir))
+                throw new InvalidOperationException("Unable to determine caller directory.");
+
+            var detectedRoot = Path.GetFullPath(Path.Combine(callerDir, ".."));
+            return detectedRoot;
+        }
+
         public static void PrepareTestFolders(params string[] folderNames)
         {
+            CustomLogger.Log("Preparing test folders...");
             foreach (var folder in folderNames)
             {
                 var fullPath = GetProjectPath(folder);
                 ClearFolder(fullPath);
             }
+            CustomLogger.Log("Test folders prepared.");
         }
     }
 }

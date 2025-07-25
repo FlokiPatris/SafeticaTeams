@@ -1,50 +1,47 @@
 using SafeticaTests.Fixtures;
-using SafeticaTests.Pages;
-using SafeticaTests.Utils;
+using SafeticaTests.Assertions;
+using SafeticaTests.Helpers;
 
 namespace SafeticaTests.Tests
 {
-    [Collection("Teams Collection")]
-    public class TeamsTests(TeamsFixture sessionFixture)
+    [Collection("Teams Collection")] 
+    public class TeamsTests(TeamsFixture fixture)
     {
-        private readonly TeamsPage _teamsPage = sessionFixture.TeamsPage;
-        private readonly string _projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+        [Fact]
+        public async Task UploadAndDownloadFile_ShouldSucceed()
+        {
+            string sampleFilePath = TestHelpers.CreateSampleFile(fixture.TestDataFolder);
+            string fileName = Path.GetFileName(sampleFilePath);
 
-        // [Fact]
-        // public async Task UploadAndDownloadFile_ShouldSucceed()
-        // {
-        //     var testDataFolder = Path.Combine(_projectRoot, "SafeticaTests", "TestData");
-        //     var downloadFolder = Path.Combine(_projectRoot, "SafeticaTests", "Downloads");
+            await fixture.TeamsPage.UploadFileAsync(sampleFilePath);
 
-        //     string sampleFilePath = TestHelpers.CreateSampleFile(testDataFolder);
-        //     string fileName = Path.GetFileName(sampleFilePath);
+            var downloadedPath = await fixture.TeamsPage.DownloadFileByNameAsync(fileName);
+            var finalDownloadedPath = Path.Combine(fixture.DownloadFolder, fileName);
 
-        //     await _teamsPage.UploadFileAsync(sampleFilePath);
+            File.Move(downloadedPath, finalDownloadedPath, overwrite: true);
 
-        //     Directory.CreateDirectory(downloadFolder);
-        //     var downloadedPath = await _teamsPage.DownloadLastFileAsync();
-        //     var finalDownloadedPath = Path.Combine(downloadFolder, fileName);
-
-        //     File.Move(downloadedPath, finalDownloadedPath, overwrite: true);
-
-        //     Assert.True(File.Exists(finalDownloadedPath), $"❌ File not found: {finalDownloadedPath}");
-        //     Assert.True(TestHelpers.FilesAreEqual(sampleFilePath, finalDownloadedPath), $"❌ File contents do not match.");
-        // }
+            Assert.True(File.Exists(finalDownloadedPath));
+            Assert.True(TestAssertions.FilesAreEqual(sampleFilePath, finalDownloadedPath));
+        }
 
         [Fact]
         public async Task SendThreeMessages_ShouldCountCorrectly()
         {
-            string prefix = $"{"Test_Fi_Sa"}{TestHelpers.GenerateRandomText()}";
-            string msg1 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
-            string msg2 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
-            string msg3 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
+            string prefix = $"Test_FlokiSafetica_{TestHelpers.GenerateRandomText(8)}";
+            var messages = new List<string>
+            {
+                $"{prefix}: {TestHelpers.GenerateRandomText()}",
+                $"{prefix}: {TestHelpers.GenerateRandomText()}",
+                $"{prefix}: {TestHelpers.GenerateRandomText()}"
+            };
 
-            await _teamsPage.SendMessageAndWaitAsync(msg1);
-            await _teamsPage.SendMessageAndWaitAsync(msg2);
-            await _teamsPage.SendMessageAndWaitAsync(msg3);
+            foreach (var message in messages)
+            {
+                await fixture.TeamsPage.SendMessageAsync(message);
+            }
 
-            int count = await _teamsPage.CountMessagesWithPrefixAsync(prefix);
-            Assert.Equal(3, count);
+            int count = await fixture.TeamsPage.CountMessagesWithPrefixAsync(prefix);
+            Assert.Equal(messages.Count, count);
         }
     }
 }

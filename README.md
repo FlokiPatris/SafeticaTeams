@@ -31,7 +31,7 @@ Before running the setup script, make sure the following tools are installed:
 git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica 
 
 ### 2. 🚀 Run the setup script in the same folder where the repository is cloned. (Using Git Bash)
-bash setup.sh
+source setup.sh
 
 ## 🧪 Running Tests
 ### 🐳 Run tests in Docker (headless = true)

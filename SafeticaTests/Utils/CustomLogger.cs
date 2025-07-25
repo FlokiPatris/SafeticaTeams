@@ -1,9 +1,8 @@
-using System;
-using System.IO;
+
 
 namespace SafeticaTests.Utils
 {
-    public static class Logger
+    public static class CustomLogger
     {
         private static readonly object _lock = new();
         private static string? _logFilePath;
