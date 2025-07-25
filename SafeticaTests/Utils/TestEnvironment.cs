@@ -33,7 +33,7 @@ namespace SafeticaTests.Utils
         {
             foreach (var folder in folderNames)
             {
-                var fullPath = GetProjectPath("SafeticaTests", folder);
+                var fullPath = GetProjectPath(folder);
                 ClearFolder(fullPath);
             }
         }

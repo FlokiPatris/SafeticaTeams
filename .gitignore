@@ -17,8 +17,10 @@ TestResults/
 .env
 .env.*
 
-# Downloaded test files
+# Test files
 Downloads/
+TestData/
+Logs/
 
 # Screenshots and logs
 *.png
