@@ -44,24 +44,34 @@ namespace SafeticaTests.Utils
             return detectedRoot;
         }
 
-        public static void PrepareTestFolders(params string[] folderNames)
+        /// <summary>
+        /// Ensures that the specified folders exist. Creates them if missing.
+        /// No logging is performed here to avoid dependency on logger initialization.
+        /// </summary>
+        public static void EnsureFoldersExist(params string[] folderNames)
         {
-            CustomLogger.Log("Preparing test folders...");
             foreach (var folder in folderNames)
             {
                 var fullPath = GetProjectPath(folder);
-
                 if (!Directory.Exists(fullPath))
                 {
                     Directory.CreateDirectory(fullPath);
-                    CustomLogger.Log($"Created missing folder: {fullPath}");
-                }
-                else
-                {
-                    ClearFolder(fullPath);
                 }
             }
-            CustomLogger.Log("Test folders prepared.");
+        }
+
+        /// <summary>
+        /// Clears the contents of the specified folders. Assumes logger is already initialized.
+        /// </summary>
+        public static void ClearFolders(params string[] folderNames)
+        {
+            CustomLogger.Log("Clearing test folders...");
+            foreach (var folder in folderNames)
+            {
+                var fullPath = GetProjectPath(folder);
+                ClearFolder(fullPath);
+            }
+            CustomLogger.Log("Test folders cleared.");
         }
     }
 }

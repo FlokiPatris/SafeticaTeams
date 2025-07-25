@@ -16,10 +16,14 @@ namespace SafeticaTests.Fixtures
 
         public async Task InitializeAsync()
         {
+            // Ensure folders exist before using them
+            TestEnvironment.EnsureFoldersExist("TestData", "Downloads", "Logs");
+
             TestDataFolder = TestEnvironment.GetProjectPath("TestData");
             DownloadFolder = TestEnvironment.GetProjectPath("Downloads");
             LogFolder = TestEnvironment.GetProjectPath("Logs");
 
+            // Initialize logger after log folder is ready
             CustomLogger.Initialize(LogFolder);
 
             CustomLogger.Log("Starting TeamsFixture initialization...");
@@ -27,8 +31,9 @@ namespace SafeticaTests.Fixtures
             CustomLogger.Log($"DownloadFolder: {DownloadFolder}");
             CustomLogger.Log($"LogFolder: {LogFolder}");
 
-            TestEnvironment.PrepareTestFolders("TestData", "Downloads", "Logs");
-            CustomLogger.Log("Test folders prepared and cleared.");
+            // Clear folders after logger is initialized
+            TestEnvironment.ClearFolders("TestData", "Downloads", "Logs");
+            CustomLogger.Log("Test folders cleared.");
 
             await _playwright.InitializeAsync();
 
