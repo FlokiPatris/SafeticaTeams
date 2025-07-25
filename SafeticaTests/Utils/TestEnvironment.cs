@@ -50,7 +50,16 @@ namespace SafeticaTests.Utils
             foreach (var folder in folderNames)
             {
                 var fullPath = GetProjectPath(folder);
-                ClearFolder(fullPath);
+
+                if (!Directory.Exists(fullPath))
+                {
+                    Directory.CreateDirectory(fullPath);
+                    CustomLogger.Log($"Created missing folder: {fullPath}");
+                }
+                else
+                {
+                    ClearFolder(fullPath);
+                }
             }
             CustomLogger.Log("Test folders prepared.");
         }
