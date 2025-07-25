@@ -25,16 +25,15 @@ jobs:
 
       - name: 🐳 Run tests inside Docker container
         run: |
-          docker run --rm ^
-            -v "${{ github.workspace }}:/app" ^
-            -w /app ^
-            -e TEAMS_LOGIN="${{ secrets.TEAMS_LOGIN }}" ^
-            -e TEAMS_PASSWORD="${{ secrets.TEAMS_PASSWORD }}" ^
-            -e TEAMS_CHAT_NAME="${{ secrets.TEAMS_CHAT_NAME }}" ^
-            -e TEAMS_BASE_URL="${{ secrets.TEAMS_BASE_URL }}" ^
-            -e HEADLESS="true" ^
-            my-playwright-dotnet:latest ^
-            pwsh bin/Debug/net8.0/playwright.ps1 install ; dotnet test --logger:"console;verbosity=detailed"
+          docker run --rm `
+            -v "${{ github.workspace }}:/app" `
+            -w /app `
+            -e TEAMS_LOGIN="${{ secrets.TEAMS_LOGIN }}" `
+            -e TEAMS_PASSWORD="${{ secrets.TEAMS_PASSWORD }}" `
+            -e TEAMS_CHAT_NAME="${{ secrets.TEAMS_CHAT_NAME }}" `
+            -e TEAMS_BASE_URL="${{ secrets.TEAMS_BASE_URL }}" `
+            -e HEADLESS="true" `
+            my-playwright-dotnet:latest pwsh -c "bin/Debug/net8.0/playwright.ps1 install; dotnet test --logger:'console;verbosity=detailed'"
 
       - name: 📸 Upload screenshots (if any)
         if: always()
