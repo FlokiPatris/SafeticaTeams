@@ -1,8 +1,10 @@
 using System.Runtime.CompilerServices;
+using SafeticaTests.Utils;
+using SafeticaTests.Helpers;
 
-namespace SafeticaTests.Utils
+namespace SafeticaTests.Helpers
 {
-    public static class TestEnvironment
+    public static class FileHelpers
     {
         public static void ClearFolder(string path)
         {
@@ -45,14 +47,14 @@ namespace SafeticaTests.Utils
         }
 
         /// <summary>
-        /// Ensures that the specified folders exist. Creates them if missing.
-        /// No logging is performed here to avoid dependency on logger initialization.
+        /// Ensures that the specified folders exist inside the SafeticaTests folder.
+        /// Creates them if missing. No logging is performed here to avoid dependency on logger initialization.
         /// </summary>
         public static void EnsureFoldersExist(params string[] folderNames)
         {
             foreach (var folder in folderNames)
             {
-                var fullPath = GetProjectPath(folder);
+                var fullPath = GetProjectPath("SafeticaTests", folder);
                 if (!Directory.Exists(fullPath))
                 {
                     Directory.CreateDirectory(fullPath);
@@ -72,6 +74,19 @@ namespace SafeticaTests.Utils
                 ClearFolder(fullPath);
             }
             CustomLogger.Log("Test folders cleared.");
+        }
+
+        
+        public static string CreateSampleFile(string folderPath)
+        {
+            string fileName = $"sample_{TestHelpers.GenerateRandomText(8)}.txt";
+            string filePath = Path.Combine(folderPath, fileName);
+
+            string content = $"This is a sample txt file with random content: {TestHelpers.GenerateRandomText(100)}";
+            File.WriteAllText(filePath, content);
+
+            CustomLogger.Log($"Sample file created: {filePath}", CustomLogger.LogLevel.Info);
+            return filePath;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SafeticaTests.Tests
         [Fact]
         public async Task UploadAndDownloadFile_ShouldSucceed()
         {
-            string sampleFilePath = TestHelpers.CreateSampleFile(fixture.TestDataFolder);
+            string sampleFilePath = FileHelpers.CreateSampleFile(fixture.TestDataFolder);
             string fileName = Path.GetFileName(sampleFilePath);
 
             await fixture.TeamsPage.UploadFileAsync(sampleFilePath);

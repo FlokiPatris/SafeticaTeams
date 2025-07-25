@@ -13,17 +13,5 @@ namespace SafeticaTests.Helpers
             CustomLogger.Log($"Generated random text: {result}", CustomLogger.LogLevel.Debug);
             return result;
         }
-
-        public static string CreateSampleFile(string folderPath)
-        {
-            string fileName = $"sample_{GenerateRandomText(8)}.txt";
-            string filePath = Path.Combine(folderPath, fileName);
-
-            string content = $"This is a sample txt file with random content: {GenerateRandomText(100)}";
-            File.WriteAllText(filePath, content);
-
-            CustomLogger.Log($"Sample file created: {filePath}", CustomLogger.LogLevel.Info);
-            return filePath;
-        }
     }
 }

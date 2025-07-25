@@ -1,4 +1,5 @@
 using SafeticaTests.Config;
+using SafeticaTests.Helpers;
 using SafeticaTests.Pages;
 using SafeticaTests.Utils;
 
@@ -17,11 +18,11 @@ namespace SafeticaTests.Fixtures
         public async Task InitializeAsync()
         {
             // Ensure folders exist before using them
-            TestEnvironment.EnsureFoldersExist("TestData", "Downloads", "Logs");
+            FileHelpers.EnsureFoldersExist("TestData", "Downloads", "Logs");
 
-            TestDataFolder = TestEnvironment.GetProjectPath("TestData");
-            DownloadFolder = TestEnvironment.GetProjectPath("Downloads");
-            LogFolder = TestEnvironment.GetProjectPath("Logs");
+            TestDataFolder = FileHelpers.GetProjectPath("TestData");
+            DownloadFolder = FileHelpers.GetProjectPath("Downloads");
+            LogFolder = FileHelpers.GetProjectPath("Logs");
 
             // Initialize logger after log folder is ready
             CustomLogger.Initialize(LogFolder);
@@ -32,7 +33,7 @@ namespace SafeticaTests.Fixtures
             CustomLogger.Log($"LogFolder: {LogFolder}");
 
             // Clear folders after logger is initialized
-            TestEnvironment.ClearFolders("TestData", "Downloads", "Logs");
+            FileHelpers.ClearFolders("TestData", "Downloads", "Logs");
             CustomLogger.Log("Test folders cleared.");
 
             await _playwright.InitializeAsync();

@@ -39,7 +39,7 @@ namespace SafeticaTests.Pages
             var messageBox = _page.Locator("[contenteditable='true']");
             await messageBox.ClickAsync();
             await _page.Keyboard.InsertTextAsync(message);
-            await _page.Keyboard.PressAsync("Enter", new () { Delay = 100 });
+            await _page.Keyboard.PressAsync("Enter", new () { Delay = 500 }); // Adding delay to ensure message is sent properly
         }
 
         public async Task<int> CountMessagesWithPrefixAsync(string prefix)
