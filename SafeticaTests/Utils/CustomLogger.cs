@@ -1,6 +1,7 @@
 
 
 namespace SafeticaTests.Utils
+
 {
     public static class CustomLogger
     {

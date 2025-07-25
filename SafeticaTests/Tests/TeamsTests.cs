@@ -1,6 +1,8 @@
 using SafeticaTests.Fixtures;
 using SafeticaTests.Assertions;
+using SafeticaTests.Utils;
 using SafeticaTests.Helpers;
+using Microsoft.VisualBasic;
 
 namespace SafeticaTests.Tests
 {
@@ -27,7 +29,7 @@ namespace SafeticaTests.Tests
         [Fact]
         public async Task SendThreeMessages_ShouldCountCorrectly()
         {
-            string prefix = $"Test_FlokiSafetica_{TestHelpers.GenerateRandomText(8)}";
+            string prefix = $"Test_FlokiSafetica_{TestHelpers.GenerateRandomText(SharedConstants.MessagePrefixLength)}";
             var messages = new List<string>
             {
                 $"{prefix}: {TestHelpers.GenerateRandomText()}",

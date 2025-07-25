@@ -8,10 +8,10 @@ namespace SafeticaTests.Utils
         {
             return new TestConfig
             {
-                Login = Environment.GetEnvironmentVariable("TEAMS_LOGIN"),
-                Password = Environment.GetEnvironmentVariable("TEAMS_PASSWORD"),
-                ChatName = Environment.GetEnvironmentVariable("TEAMS_CHAT_NAME"),
-                BaseUrl = Environment.GetEnvironmentVariable("TEAMS_BASE_URL"),
+                Login = Environment.GetEnvironmentVariable(SharedConstants.TeamsLoginSecretName),
+                Password = Environment.GetEnvironmentVariable(SharedConstants.TeamsPasswordSecretName),
+                ChatName = Environment.GetEnvironmentVariable(SharedConstants.TeamsChatNameSecretName),
+                BaseUrl = Environment.GetEnvironmentVariable(SharedConstants.TeamsBaseUrlSecretName),
             };
         }
     }

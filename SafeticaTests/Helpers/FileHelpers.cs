@@ -5,8 +5,6 @@ namespace SafeticaTests.Helpers
 {
     public static class FileHelpers
     {
-        private const string TestProjectFolder = "SafeticaTests";
-
         /// <summary>
         /// Ensures that the specified folders exist inside the test project folder.
         /// Creates them if missing. No logging is performed here to avoid dependency on logger initialization.
@@ -64,7 +62,7 @@ namespace SafeticaTests.Helpers
         public static string GetProjectPath(params string[] subPaths)
         {
             var root = GetProjectRoot();
-            return Path.Combine([root, TestProjectFolder, .. subPaths]);
+            return Path.Combine([root, SharedConstants.TestProjectFolder, .. subPaths]);
         }
 
         /// <summary>
@@ -72,7 +70,7 @@ namespace SafeticaTests.Helpers
         /// </summary>
         private static string GetProjectRoot([CallerFilePath] string callerPath = "")
         {
-            var envRoot = Environment.GetEnvironmentVariable("SAFETICA_PROJECT_ROOT");
+            var envRoot = Environment.GetEnvironmentVariable(SharedConstants.ProjectRootEnvVarName);
             if (!string.IsNullOrWhiteSpace(envRoot) && Directory.Exists(envRoot))
             {
                 return envRoot;
@@ -91,10 +89,10 @@ namespace SafeticaTests.Helpers
         /// </summary>
         public static string CreateSampleFile(string folderPath)
         {
-            string fileName = $"sample_{TestHelpers.GenerateRandomText(8)}.txt";
+            string fileName = $"sample_{TestHelpers.GenerateRandomText(SharedConstants.FileNameLength)}.txt";
             string filePath = Path.Combine(folderPath, fileName);
 
-            string content = $"This is a sample txt file with random content: {TestHelpers.GenerateRandomText(100)}";
+            string content = $"This is a sample txt file with random content: {TestHelpers.GenerateRandomText(SharedConstants.SampleFileContentLength)}";
             File.WriteAllText(filePath, content);
 
             CustomLogger.Log($"Sample file created: {filePath}", CustomLogger.LogLevel.Info);

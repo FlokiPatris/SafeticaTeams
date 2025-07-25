@@ -29,7 +29,7 @@ namespace SafeticaTests.Pages
             await _page.GetByRole(AriaRole.Button, new() { Name = "Your profile, status Available" }).ClickAsync();
             await _page.GetByRole(AriaRole.Menuitem, new() { Name = "Sign out from" }).ClickAsync();
             await _page.GetByRole(AriaRole.Button, new() { Name = "Sign out" }).ClickAsync();
-            await _page.WaitForURLAsync(url => url.Contains("login"), new() { Timeout = 10000 });
+            await _page.WaitForURLAsync(url => url.Contains("login"), new() { Timeout = SharedConstants.WaitVeryLong });
         }
 
         public async Task SendMessageAsync(string message)
@@ -39,7 +39,7 @@ namespace SafeticaTests.Pages
             var messageBox = _page.Locator("[contenteditable='true']");
             await messageBox.ClickAsync();
             await _page.Keyboard.InsertTextAsync(message);
-            await _page.Keyboard.PressAsync("Enter", new () { Delay = 500 }); // Adding delay to ensure message is sent properly
+            await _page.Keyboard.PressAsync("Enter", new () { Delay = SharedConstants.WaitShort }); // Adding delay to ensure message is sent properly
         }
 
         public async Task<int> CountMessagesWithPrefixAsync(string prefix)
@@ -71,11 +71,11 @@ namespace SafeticaTests.Pages
             await fileInput.SetInputFilesAsync(filePath);
 
             await _page.GetByRole(AriaRole.Button, new() { Name = "Anyone with the link can edit" })
-                       .WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+                       .WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = SharedConstants.WaitVeryLong });
             await _page.Keyboard.PressAsync("Enter");
 
             string fileName = Path.GetFileName(filePath);
-            await _page.WaitForSelectorAsync($"div:has-text('{fileName}')", new() { Timeout = 10000 });
+            await _page.WaitForSelectorAsync($"div:has-text('{fileName}')", new() { Timeout = SharedConstants.WaitVeryLong });
 
             CustomLogger.Log($"[TeamsPage] File \"{fileName}\" uploaded successfully");
         }
