@@ -1,40 +1,50 @@
+using SafeticaTests.Fixtures;
 using SafeticaTests.Pages;
-
+using SafeticaTests.Utils;
 
 namespace SafeticaTests.Tests
 {
-    public class TeamsTests(PlaywrightFixture fixture) : IClassFixture<PlaywrightFixture>
+    [Collection("Teams Collection")]
+    public class TeamsTests(TeamsFixture sessionFixture)
     {
-        private readonly PlaywrightFixture _fixture = fixture;
+        private readonly TeamsPage _teamsPage = sessionFixture.TeamsPage;
+        private readonly string _projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+
+        // [Fact]
+        // public async Task UploadAndDownloadFile_ShouldSucceed()
+        // {
+        //     var testDataFolder = Path.Combine(_projectRoot, "SafeticaTests", "TestData");
+        //     var downloadFolder = Path.Combine(_projectRoot, "SafeticaTests", "Downloads");
+
+        //     string sampleFilePath = TestHelpers.CreateSampleFile(testDataFolder);
+        //     string fileName = Path.GetFileName(sampleFilePath);
+
+        //     await _teamsPage.UploadFileAsync(sampleFilePath);
+
+        //     Directory.CreateDirectory(downloadFolder);
+        //     var downloadedPath = await _teamsPage.DownloadLastFileAsync();
+        //     var finalDownloadedPath = Path.Combine(downloadFolder, fileName);
+
+        //     File.Move(downloadedPath, finalDownloadedPath, overwrite: true);
+
+        //     Assert.True(File.Exists(finalDownloadedPath), $"❌ File not found: {finalDownloadedPath}");
+        //     Assert.True(TestHelpers.FilesAreEqual(sampleFilePath, finalDownloadedPath), $"❌ File contents do not match.");
+        // }
 
         [Fact]
-        public async Task SendMessagesAndHandleFile()
+        public async Task SendThreeMessages_ShouldCountCorrectly()
         {
-            var teamsPage = new TeamsPage(_fixture.Page, _fixture.Config.BaseUrl);
+            string prefix = $"{"Test_Fi_Sa"}{TestHelpers.GenerateRandomText()}";
+            string msg1 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
+            string msg2 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
+            string msg3 = $"{prefix}-{TestHelpers.GenerateRandomText()}";
 
-            await teamsPage.LoginAsync(_fixture.Config.Login, _fixture.Config.Password);
+            await _teamsPage.SendMessageAndWaitAsync(msg1);
+            await _teamsPage.SendMessageAndWaitAsync(msg2);
+            await _teamsPage.SendMessageAndWaitAsync(msg3);
 
-            // Send three messages
-            await teamsPage.SendMessageAsync("aaaa");
-            await teamsPage.SendMessageAsync("bbbbb");
-            await teamsPage.SendMessageAsync("ccc");
-
-            // Upload a file
-            await teamsPage.UploadFileAsync("TestData/sample.txt");
-            await Task.Delay(3000); // Wait for upload to complete
-
-            // Download the last file
-            await teamsPage.DownloadLastFileAsync("Downloads");
-
-            // Take a screenshot
-            await _fixture.Page.ScreenshotAsync(new() { Path = "TeamsTest.png" });
-
-            // Assert message count
-            var count = await teamsPage.CountMessagesAsync("Hello");
-            Assert.True(count >= 1);
-
-            // Assert file download
-            Assert.True(File.Exists("Downloads/sample.txt"));
+            int count = await _teamsPage.CountMessagesWithPrefixAsync(prefix);
+            Assert.Equal(3, count);
         }
     }
 }

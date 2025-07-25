@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 using SafeticaTests.Config;
 using SafeticaTests.Utils;
 
-namespace SafeticaTests.Tests
+namespace SafeticaTests.Fixtures
 {
     public class PlaywrightFixture : IAsyncLifetime
     {
