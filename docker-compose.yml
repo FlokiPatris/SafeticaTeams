@@ -1,11 +1,24 @@
-version: '3.8'
-
 services:
   safetica-tests:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: safetica-safetica-tests
+
     environment:
-      TEAMS_LOGIN: "${TEAMS_LOGIN}"
-      TEAMS_PASSWORD: "${TEAMS_PASSWORD}"
-      TEAMS_CHAT_NAME: "${TEAMS_CHAT_NAME}"
-      TEAMS_BASE_URL: "${TEAMS_BASE_URL}"
-      HEADLESS: "true"
+      # 🔐 These environment variables are injected from the .env file or shell environment
+      # They are securely passed from GitHub Actions secrets during CI
+      TEAMS_LOGIN: ${TEAMS_LOGIN}
+      TEAMS_PASSWORD: ${TEAMS_PASSWORD}
+      TEAMS_CHAT_NAME: ${TEAMS_CHAT_NAME}
+      TEAMS_BASE_URL: ${TEAMS_BASE_URL}
+
+      # 📌 This is a fixed path inside the container where the project is mounted
+      SAFETICA_PROJECT_ROOT: /app
+
+    volumes:
+      - .:/app                       # 📦 Mount the entire project directory into the container at /app
+
+    working_dir: /app/SafeticaTests  # 📂 Set the working directory inside the container to the test project folder
+
+    # ▶️ The command to run tests is defined in the Dockerfile using CMD ["dotnet", "test"]

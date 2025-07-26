@@ -1,4 +1,4 @@
-name: 🧪 Safetica Teams Playwright Tests
+name: 🐳 Safetica Teams Docker Tests
 
 on:
   workflow_dispatch:
@@ -9,35 +9,43 @@ on:
 jobs:
   test:
     name: 🐳 Run Playwright Tests in Docker
-    runs-on: windows-latest
-    environment: qa
-
-    env:
-      TEAMS_LOGIN: ${{ secrets.TEAMS_LOGIN }}
-      TEAMS_PASSWORD: ${{ secrets.TEAMS_PASSWORD }}
-      TEAMS_CHAT_NAME: ${{ secrets.TEAMS_CHAT_NAME }}
-      TEAMS_BASE_URL: ${{ secrets.TEAMS_BASE_URL }}
-      HEADLESS: "true"
+    runs-on: ubuntu-latest
+    environment: safeticaEnv
 
     steps:
       - name: 🧾 Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: 🐳 Run tests inside Docker container
+      - name: 🛠️ Create .env file for Docker Compose
+        shell: bash
         run: |
-          docker run --rm `
-            -v "${{ github.workspace }}:/app" `
-            -w /app `
-            -e TEAMS_LOGIN="${{ secrets.TEAMS_LOGIN }}" `
-            -e TEAMS_PASSWORD="${{ secrets.TEAMS_PASSWORD }}" `
-            -e TEAMS_CHAT_NAME="${{ secrets.TEAMS_CHAT_NAME }}" `
-            -e TEAMS_BASE_URL="${{ secrets.TEAMS_BASE_URL }}" `
-            -e HEADLESS="true" `
-            my-playwright-dotnet:latest pwsh -c "bin/Debug/net8.0/playwright.ps1 install; dotnet test --logger:'console;verbosity=detailed'"
+          echo "TEAMS_LOGIN=${{ secrets.TEAMS_LOGIN }}" >> .env
+          echo "TEAMS_PASSWORD=${{ secrets.TEAMS_PASSWORD }}" >> .env
+          echo "TEAMS_CHAT_NAME=${{ secrets.TEAMS_CHAT_NAME }}" >> .env
+          echo "TEAMS_BASE_URL=${{ secrets.TEAMS_BASE_URL }}" >> .env
+          echo "SAFETICA_PROJECT_ROOT=/app" >> .env
+
+      - name: ✅ Validate secrets
+        shell: bash
+        run: |
+          missing=""
+          [ -z "${{ secrets.TEAMS_LOGIN }}" ] && missing+="TEAMS_LOGIN\n"
+          [ -z "${{ secrets.TEAMS_PASSWORD }}" ] && missing+="TEAMS_PASSWORD\n"
+          [ -z "${{ secrets.TEAMS_CHAT_NAME }}" ] && missing+="TEAMS_CHAT_NAME\n"
+          [ -z "${{ secrets.TEAMS_BASE_URL }}" ] && missing+="TEAMS_BASE_URL\n"
+          if [ -n "$missing" ]; then
+            echo -e "❌ Missing secrets:\n$missing"
+            exit 1
+          fi
+          echo "✅ All secrets are present. Proceeding..."
+
+      - name: 🐳 Build and run tests in Docker
+        run: |
+          docker compose up --build --abort-on-container-exit --exit-code-from safetica-tests
 
       - name: 📸 Upload screenshots (if any)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: screenshots
-          path: "*.png"
+          path: '**/*.png'

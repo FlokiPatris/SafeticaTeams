@@ -26,7 +26,8 @@ Before running the setup script, make sure the following tools are installed:
 ### 🪟 Windows
 - Use Git Bash (not PowerShell or CMD)
 
-## 💻 Setup
+## 💻 Setup for local run
+
 ### 1. 🧾 Clone and move to the repository.
 git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica 
 
@@ -34,6 +35,15 @@ git clone https://github.com/FlokiPatris/Safetica.git && cd Safetica
 source setup.sh
 
 ## 🧪 Running Tests
-### 🐳 Run tests in Docker (headless = true)
-docker-compose up --build
 
+### 💻 Run tests locally (headless = false)
+Use Git Bash (not PowerShell or CMD) and run the following command from the root of the cloned repository:
+TEAMS_LOGIN=your_email@example.com \
+TEAMS_PASSWORD=your_secure_password \
+TEAMS_CHAT_NAME="Your Teams Chat Name" \
+TEAMS_BASE_URL=https://teams.microsoftExample.com/ \
+HEADLESS=false \
+dotnet test
+
+### 🐳 Run tests in Docker (headless = true)
+Navigate to the GitHub Actions page. Select Safetica Teams Docker Tests and run the workflow on the main branch.
